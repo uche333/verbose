@@ -108,3 +108,17 @@
   )
 )
 
+;; Set cooldown period (only contract owner)
+(define-public (set-cooldown-period (new-cooldown uint))
+  (begin
+    (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-OWNER-ONLY)
+    (asserts! (> new-cooldown u0) ERR-INVALID-COOLDOWN)
+    (var-set cooldown-period new-cooldown)
+    (ok new-cooldown)
+  )
+)
+
+;; Get contract STX balance
+(define-read-only (get-contract-balance)
+  (stx-get-balance (as-contract tx-sender))
+)
